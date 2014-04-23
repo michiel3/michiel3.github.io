@@ -23,6 +23,7 @@
       var initializePlayer = function(){
           _.defer(function(){
               DZ.getLoginStatus(function(response) {
+                console.info(response);
                   if(response.status != 'unknown'){
                     signed_in = true;
                   }
