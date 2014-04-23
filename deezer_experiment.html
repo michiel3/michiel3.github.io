@@ -6,20 +6,17 @@
 </head>
 <body>
   <div id="dz-root"></div>
+  <div id="player"></div>
   <script>
-    window.dzAsyncInit = function() {
+    $(function() {
       DZ.init({
         appId  : '136301',
-        channelUrl : 'https://michiel3.github.io/deezer.html'
+        channelUrl : 'https://michiel3.github.io/deezer.html',
+        player : {
+          onload : function(args){ DZ.player.playTracks([3135556]); }
+        }
       });
-    };
-
-    (function() {
-      var e = document.createElement('script');
-      e.src = 'https://cdns-files.deezer.com/js/min/dz.js';
-      e.async = true;
-      document.getElementById('dz-root').appendChild(e);
-    }());
+    });
   </script>
 </body>
 </html>
