@@ -38,8 +38,10 @@
               if(typeof seek == 'undefined'){
                   DZ.getLoginStatus(function(response) {
                       if (response.authResponse) {
+                        console.log("logged in");
                           current_track_duration = current_track.track.duration;
                       } else {
+                          console.log("not logged in");
                           current_track_duration = 30;
                       }
                   });
