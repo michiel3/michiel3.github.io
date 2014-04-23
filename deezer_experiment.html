@@ -10,6 +10,7 @@
   <div id="container"></div>
   <script>
     $(function() {
+      var signed_in = false;
       DZ.init({
           appId  : '136301',
           channelUrl : 'https://michiel3.github.io/deezer.html',
@@ -20,6 +21,13 @@
         });
 
       var initializePlayer = function(){
+          _.defer(function(){
+              DZ.getLoginStatus(function(response) {
+                  if(response.status != 'unknown'){
+                    signed_in = true;
+                  }
+              });
+          });
           DZ.player.setVolume(0);
           startSong();
           subscribeToEvents();
@@ -37,13 +45,9 @@
           var stop_after;
 
           DZ.Event.subscribe('player_play', function(evt_name){
-            _.defer(function(){
-                DZ.getLoginStatus(function(response) {
-                    console.info(response);
-                    });
-              });
               if(typeof seek == 'undefined'){
-                  seek = skip_to/free_snippet_length*100;
+                  song_length = signed_in ? current_track.track.duration : free_snippet_length;
+                  seek = skip_to/song_length*100;
                   DZ.player.seek(seek);
               }
           });
