@@ -6,17 +6,70 @@
 </head>
 <body>
   <div id="dz-root"></div>
-  <div id="player"></div>
+  <div id="container"></div>
   <script>
     $(function() {
       DZ.init({
-        appId  : '136301',
-        channelUrl : 'https://michiel3.github.io/deezer.html',
-        player : {
-          onload : function(args){ DZ.player.playTracks([3135556]); }
-        }
-      });
-    });
+          appId  : '136301',
+          channelUrl : 'https://michiel3.github.io/deezer.html',
+          player : {
+              container: 'container',
+              onload : function(args){ initializePlayer(); }
+          }
+        });
+
+      var initializePlayer = function(){
+          DZ.player.setVolume(0);
+          startSong();
+          subscribeToEvents();
+      };
+
+      var startSong = function(){
+          DZ.player.playTracks([7818900]);
+      }
+
+      var subscribeToEvents = function(){
+          var skip_to = 25;
+          var seek;
+          var current_track;
+          var stop_after;
+
+          DZ.Event.subscribe('player_play', function(evt_name){
+              if(typeof seek == 'undefined'){
+                  DZ.getLoginStatus(function(response) {
+                      if (response.authResponse) {
+                          current_track_duration = current_track.track.duration;
+                      } else {
+                          current_track_duration = 30;
+                      }
+                  });
+
+                  seek = skip_to/current_track_duration*100;
+                  DZ.player.seek(seek);
+              }
+          });
+
+          DZ.Event.subscribe('current_track', function(this_track){
+              current_track = this_track;
+          });
+
+          DZ.Event.subscribe('player_position', function(position){
+              current_position = position[0];
+              current_track_duration = current_track.track.duration;
+
+              if(current_position > 20) {
+                  DZ.player.setVolume(100);
+                  if(typeof stop_after == 'undefined'){
+                      stop_after = current_position + 3;
+                  }
+              }
+
+              if(current_position>stop_after){
+                  DZ.player.pause();
+              }
+          });
+      }
+  });
   </script>
 </body>
 </html>
