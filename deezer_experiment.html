@@ -19,7 +19,13 @@
         });
 
       var initializePlayer = function(){
-          DZ.logout();
+          DZ.getLoginStatus(function(response) {
+                    if (response.authResponse) {
+                        alert('signed in!');
+                    } else {
+                        alert('not signed in');
+                    }
+                });
           DZ.player.setVolume(0);
           startSong();
           subscribeToEvents();
