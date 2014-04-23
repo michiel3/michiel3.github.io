@@ -19,6 +19,7 @@
         });
 
       var initializePlayer = function(){
+          DZ.logout();
           DZ.player.setVolume(0);
           startSong();
           subscribeToEvents();
@@ -30,23 +31,14 @@
 
       var subscribeToEvents = function(){
           var skip_to = 25;
+          var free_snippet_length = 30;
           var seek;
           var current_track;
           var stop_after;
 
           DZ.Event.subscribe('player_play', function(evt_name){
               if(typeof seek == 'undefined'){
-                  DZ.getLoginStatus(function(response) {
-                      if (response.authResponse) {
-                        console.log("logged in");
-                          current_track_duration = current_track.track.duration;
-                      } else {
-                          console.log("not logged in");
-                          current_track_duration = 30;
-                      }
-                  });
-
-                  seek = skip_to/current_track_duration*100;
+                  seek = skip_to/free_snippet_length*100;
                   DZ.player.seek(seek);
               }
           });
