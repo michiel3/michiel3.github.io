@@ -7,7 +7,6 @@
 </head>
 <body>
   <div id="dz-root"></div>
-  <div id="container"></div>
   <script>
     $(function() {
       var signed_in = false;
@@ -15,7 +14,6 @@
           appId  : '136301',
           channelUrl : 'https://michiel3.github.io/deezer.html',
           player : {
-              container: 'container',
               onload : function(args){ initializePlayer(); }
           }
         });
@@ -23,7 +21,6 @@
       var initializePlayer = function(){
           _.defer(function(){
               DZ.getLoginStatus(function(response) {
-                console.info(response);
                   if(response.status != 'unknown'){
                     signed_in = true;
                   }
