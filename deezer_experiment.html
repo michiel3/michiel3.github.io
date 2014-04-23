@@ -22,12 +22,7 @@
       var initializePlayer = function(){
           _.delay(function(){
             DZ.getLoginStatus(function(response) {
-
-                    if (response.authResponse) {
-                        alert('signed in!');
-                    } else {
-                        alert('not signed in');
-                    }
+                console.info(response);
                 });
         }, 2000);
           DZ.player.setVolume(0);
